@@ -1,9 +1,11 @@
 package com.redflag.lfvg.trivia;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -21,31 +23,59 @@ public class TriviaActivity extends AppCompatActivity {
         final Button aButton = findViewById(R.id.answerA);
         final Button bButton = findViewById(R.id.answerB);
         final Button cButton = findViewById(R.id.answerC);
-
+        ImageView feedback = findViewById(R.id.imageView_feedback);
+        feedback.setVisibility(View.GONE);
         aButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(perguntas[aux].respostaECorreta(aButton.getText().toString())) scoreTotal += perguntas[aux].getValorPergunta();
+                if(perguntas[aux].respostaECorreta(aButton.getText().toString())) {
+                    scoreTotal += perguntas[aux].getValorPergunta();
+                    redesenharResultado(true);
+                }else redesenharResultado(false);
                 aux++;
-                redesenhar(aux);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        redesenhar(aux);                    }
+                }, 600);
+
             }
         });
 
         bButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(perguntas[aux].respostaECorreta(bButton.getText().toString())) scoreTotal += perguntas[aux].getValorPergunta();
+                if(perguntas[aux].respostaECorreta(bButton.getText().toString())) {
+                    scoreTotal += perguntas[aux].getValorPergunta();
+                    redesenharResultado(true);
+                }else redesenharResultado(false);
                 aux++;
-                redesenhar(aux);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        redesenhar(aux);                    }
+                }, 600);
+
             }
         });
 
         cButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(perguntas[aux].respostaECorreta(cButton.getText().toString())) scoreTotal += perguntas[aux].getValorPergunta();
+                if(perguntas[aux].respostaECorreta(cButton.getText().toString())) {
+                    scoreTotal += perguntas[aux].getValorPergunta();
+                    redesenharResultado(true);
+                }else redesenharResultado(false);
                 aux++;
-                redesenhar(aux);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        redesenhar(aux);                    }
+                }, 600);
+
             }
         });
     }
@@ -57,12 +87,19 @@ public class TriviaActivity extends AppCompatActivity {
         Button cButton = findViewById(R.id.answerC);
         TextView score = findViewById(R.id.score);
         TextView pergunta = findViewById(R.id.question);
+        ImageView feedback = findViewById(R.id.imageView_feedback);
         if(aux < perguntas.length){
             aButton.setText(perguntas[v].getListaRespostas()[0]);
             bButton.setText(perguntas[v].getListaRespostas()[1]);
             cButton.setText(perguntas[v].getListaRespostas()[2]);
             score.setText("Score: " + scoreTotal);
             pergunta.setText(perguntas[v].getPergunta());
+            aButton.setVisibility(View.VISIBLE);
+            bButton.setVisibility(View.VISIBLE);
+            cButton.setVisibility(View.VISIBLE);
+            pergunta.setVisibility(View.VISIBLE);
+            score.setVisibility(View.VISIBLE);
+            feedback.setVisibility(View.GONE);
         }
         else{
             aButton.setVisibility(View.GONE);
@@ -70,6 +107,25 @@ public class TriviaActivity extends AppCompatActivity {
             cButton.setVisibility(View.GONE);
             pergunta.setVisibility(View.GONE);
             score.setText("Score Final: " + scoreTotal);
+            score.setVisibility(View.VISIBLE);
+            feedback.setVisibility(View.GONE);
         }
+    }
+
+    private void redesenharResultado(Boolean check){
+        Button aButton = findViewById(R.id.answerA);
+        Button bButton = findViewById(R.id.answerB);
+        Button cButton = findViewById(R.id.answerC);
+        TextView score = findViewById(R.id.score);
+        TextView pergunta = findViewById(R.id.question);
+        ImageView feedback = findViewById(R.id.imageView_feedback);
+        aButton.setVisibility(View.GONE);
+        bButton.setVisibility(View.GONE);
+        cButton.setVisibility(View.GONE);
+        pergunta.setVisibility(View.GONE);
+        score.setVisibility(View.GONE);
+        feedback.setVisibility(View.VISIBLE);
+        if(check) feedback.setImageResource(R.drawable.ic_checksvd);
+        else feedback.setImageResource(R.drawable.ic_wrong);
     }
 }
