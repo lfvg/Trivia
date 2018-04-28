@@ -23,8 +23,12 @@ public class TriviaActivity extends AppCompatActivity {
         final Button aButton = findViewById(R.id.answerA);
         final Button bButton = findViewById(R.id.answerB);
         final Button cButton = findViewById(R.id.answerC);
+        final Button reiniciar = findViewById(R.id.re_run);
         ImageView feedback = findViewById(R.id.imageView_feedback);
+        reiniciar.setVisibility(View.GONE);
         feedback.setVisibility(View.GONE);
+
+
         aButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +82,15 @@ public class TriviaActivity extends AppCompatActivity {
 
             }
         });
+
+        reiniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aux = 0;
+                scoreTotal = 0;
+                redesenhar(aux);
+            }
+        });
     }
 
 
@@ -88,6 +101,10 @@ public class TriviaActivity extends AppCompatActivity {
         TextView score = findViewById(R.id.score);
         TextView pergunta = findViewById(R.id.question);
         ImageView feedback = findViewById(R.id.imageView_feedback);
+        if (aux==0){
+            Button reRun = findViewById(R.id.re_run);
+            reRun.setVisibility(View.GONE);
+        }
         if(aux < perguntas.length){
             aButton.setText(perguntas[v].getListaRespostas()[0]);
             bButton.setText(perguntas[v].getListaRespostas()[1]);
@@ -102,6 +119,7 @@ public class TriviaActivity extends AppCompatActivity {
             feedback.setVisibility(View.GONE);
         }
         else{
+            Button reRun = findViewById(R.id.re_run);
             aButton.setVisibility(View.GONE);
             bButton.setVisibility(View.GONE);
             cButton.setVisibility(View.GONE);
@@ -109,6 +127,7 @@ public class TriviaActivity extends AppCompatActivity {
             score.setText("Score Final: " + scoreTotal);
             score.setVisibility(View.VISIBLE);
             feedback.setVisibility(View.GONE);
+            reRun.setVisibility(View.VISIBLE);
         }
     }
 
